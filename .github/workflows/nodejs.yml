@@ -33,6 +33,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
           restore-keys: ${{ runner.os }}-node-
 
+      - name: 'Install NPM'
+        run: 'npm --global install npm'
+
       - name: 'Install Dependencies'
         run: 'npm install'
 
