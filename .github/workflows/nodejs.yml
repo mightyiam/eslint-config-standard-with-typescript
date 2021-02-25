@@ -1,0 +1,40 @@
+name: 'tests'
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+      fail-fast: false
+
+    steps:
+      - name: 'Checkout Project'
+        uses: 'actions/checkout@v2'
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: 'actions/setup-node@v2.1.5'
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 'Cache Node dependencies'
+        uses: 'actions/cache@v2.1.4'
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: 'Install Dependencies'
+        run: 'npm install'
+
+      - name: 'Run Tests'
+        run: 'npm test'

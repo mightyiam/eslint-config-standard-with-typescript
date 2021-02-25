@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/standard/eslint-config-standard-with-typescript.svg?branch=master)](https://travis-ci.org/standard/eslint-config-standard-with-typescript)
+[![Build Status](https://github.com/standard/eslint-config-standard-with-typescript/workflows/tests/badge.svg?branch=master)](https://github.com/standard/eslint-config-standard-with-typescript/actions?query=workflow%3A%22tests%22)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Releases](https://coderelease.io/badge/standard/eslint-config-standard-with-typescript)](https://coderelease.io/github/repository/standard/eslint-config-standard-with-typescript)
 
