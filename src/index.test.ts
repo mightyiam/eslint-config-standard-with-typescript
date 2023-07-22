@@ -40,7 +40,8 @@ const extractVersionSpec = (range: string): string => range.split('@').slice(-1)
 const equivalents = [...(new Linter()).getRules().keys()]
   .filter(name => Object.prototype.hasOwnProperty.call(typescriptEslintRules, name))
 
-const ourRules = exported.rules
+const [upstream, ours] = exported
+const ourRules = ours.rules
 if (ourRules === undefined) throw new Error('we seem to be exporting no rules')
 
 const standardRules = configStandard.rules
@@ -510,7 +511,7 @@ test('our configuration is compatible with the plugin and parser at bottom of pe
   t.deepEqual(bottomPluginVersion, minPeerDepVersion.version, 'bottom plugin version is bottom of peer dep')
   t.deepEqual(bottomParserVersion, minPeerDepVersion.version, 'bottom parser version is bottom of peer dep')
 
-  const config = structuredClone(exported)
+  const config = structuredClone(ours)
 
   config.plugins = [typescriptEslintBottomPlugin]
   config.parser = typescriptEslintBottomParser
