@@ -1,6 +1,6 @@
 import test from 'ava'
-import exported from '.'
-import configStandard from './eslint-config-standard'
+import exported from './index.js'
+import configStandard from './eslint-config-standard.js'
 import { rules as typescriptEslintRules } from '@typescript-eslint/eslint-plugin'
 import standardPkg from 'eslint-config-standard/package.json'
 import type { NormalizedPackageJson, readPackageUp } from 'read-pkg-up'

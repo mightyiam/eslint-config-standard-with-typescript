@@ -1,4 +1,4 @@
-import configStandard from './eslint-config-standard'
+import configStandard from './eslint-config-standard.js'
 import { type Linter } from 'eslint'
 
 const equivalents = [
@@ -224,4 +224,4 @@ const config: Linter.Config = {
   }
 }
 
-export = config
+export default config

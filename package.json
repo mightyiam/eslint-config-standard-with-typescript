@@ -2,7 +2,8 @@
   "name": "eslint-config-standard-with-typescript",
   "version": "37.0.0",
   "description": "An ESLint Shareable Config for JavaScript Standard Style with TypeScript support",
-  "main": "lib/index.js",
+  "type": "module",
+  "exports": "./lib/index.js",
   "scripts": {
     "compile": "tsc",
     "lint": "eslint .",

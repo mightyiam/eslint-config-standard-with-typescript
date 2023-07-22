@@ -1,6 +1,7 @@
 {
   "extends": "tsconfigs/nodejs-module",
   "compilerOptions": {
+    "moduleResolution": "nodenext",
     "outDir": "lib"
   },
   "include": [
