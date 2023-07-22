@@ -1,6 +1,7 @@
 {
   "extends": "tsconfigs/nodejs-module",
   "compilerOptions": {
+    "module": "esnext",
     "moduleResolution": "nodenext",
     "outDir": "lib"
   },
