@@ -53,8 +53,10 @@
     "TypeScript"
   ],
   "dependencies": {
+    "@types/redux": "^3.6.0",
     "@typescript-eslint/parser": "^6.4.0",
-    "eslint-config-standard": "17.1.0"
+    "eslint-config-standard": "17.1.0",
+    "redux": "^4.2.1"
   },
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.4.0",
