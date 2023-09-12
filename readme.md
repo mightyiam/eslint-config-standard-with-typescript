@@ -37,7 +37,7 @@ Here is an example, but use it only for reference,
 because your decisions regarding version ranges and range specifiers may vary.
 
 ```sh
-yarn add \
+yarn add --dev \
   "typescript@*" \
   "eslint@^8.0.1" \
   "eslint-plugin-promise@^6.0.0" \
