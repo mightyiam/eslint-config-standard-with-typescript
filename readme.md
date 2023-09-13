@@ -36,7 +36,7 @@ so if that's what you're using, install them manually.
 Here is an example, but use it only for reference,
 because your decisions regarding version ranges and range specifiers may vary.
 
-```sh
+```
 yarn add --dev \
   "typescript@*" \
   "eslint@^8.0.1" \
