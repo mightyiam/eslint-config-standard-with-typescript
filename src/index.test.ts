@@ -367,11 +367,11 @@ test('Exported rule values do not reference eslint-config-standard ones', (t) =>
   }
 })
 
-test('npm install args in readme satisfy peerDeps', async (t) => {
+test('yarn install args in readme satisfy peerDeps', async (t) => {
   const { pkgJson, pkgPath, ourPeerDeps } = await getPkgDetails()
   const readme = (await readFile(resolve(pkgPath, '..', 'readme.md'))).toString()
-  const match = readme.match(/```\n(npm install .*?)```/s)
-  if (match === null) throw new Error()
+  const match = readme.match(/```\n(yarn add .*?)```/s)
+  if (match === null) throw new Error("couldn't find yarn add")
   if (match.length === 0) throw new Error('failed to find code block')
   if (match.length > 2) throw new Error('matched multiple code blocks')
   const installArgRanges = Object.fromEntries(

@@ -38,13 +38,13 @@ because your decisions regarding version ranges and range specifiers may vary.
 
 ```
 yarn add --dev \
-  "typescript@*" \
-  "eslint@^8.0.1" \
-  "eslint-plugin-promise@^6.0.0" \
-  "eslint-plugin-import@^2.25.2" \
-  "eslint-plugin-n@^15.0.0" \
-  "@typescript-eslint/eslint-plugin@^6.4.0" \
-  eslint-config-standard-with-typescript
+  typescript@\* \
+  eslint@^8.0.1 \
+  eslint-plugin-promise@^6.0.0 \
+  eslint-plugin-import@^2.25.2 \
+  eslint-plugin-n@^15.0.0 \
+  @typescript-eslint/eslint-plugin@^6.4.0 \
+  eslint-config-standard-with-typescript@latest
 ```
 
 # Example config
