@@ -29,6 +29,8 @@ export function extendStoreClass (BaseStore: new () => StoreInterface): (new () 
 
 export const StoreLoggerClass: ((new () => StoreInterface)) = extendedStoreClass(StoreLoggerMixin)
 
+export const StoreLoggerClass: ((new () => StoreInterface)) = storeWithLoggerClass(Store)
+
 export const logger1: StoreInterface = new RequestLoggerClass()
 
 // interface Logger {
