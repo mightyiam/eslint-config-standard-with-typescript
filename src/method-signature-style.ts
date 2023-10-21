@@ -1,42 +1,42 @@
-interface LoggerInterface { // Sealed
-  print: (s: string) => void
+interface StoreInterface { // Sealed
+  write: (s: string) => void
 }
 
-class DefaultLogger implements LoggerInterface { // Sealed
-  print (s: string): void {
-    console.log('DEFAULT: ', s)
+class Store implements StoreInterface { // Sealed
+  write (s: string): void {
+    // write to store
   }
 }
 
-export class RequestLoggerMixin extends DefaultLogger implements LoggerInterface {
-  print (s: string): void {
+export class RequestLoggerMixin extends Store implements StoreInterface {
+  write (s: string): void {
     console.log('REQUEST: ', s)
   }
 }
 
-export class ResponseLoggerMixin extends DefaultLogger implements LoggerInterface {
-  print (s: string): void {
-    console.log('RESPONSE: ', s)
+export class ResponseLoggerMixin extends Store implements StoreInterface {
+  write (s: string): void {
+    console.error('RESPONSE: ', s)
   }
 }
 
-export function extendLoggerClass (BaseLogger: new () => LoggerInterface): (new () => LoggerInterface) {
+export function extendLoggerClass (BaseLogger: new () => StoreInterface): (new () => StoreInterface) {
   return class extendedLogger extends BaseLogger {
     // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
     // but extended class 'extendedLogger' defines it as instance member function."
-    print (s: string): void {
+    write (s: string): void {
       console.log('LOG: ', s)
 
-      super.print(s)
+      super.write(s)
     }
   }
 }
 
-export const RequestLoggerClass: ((new () => LoggerInterface)) = extendLoggerClass(RequestLoggerMixin)
-export const ResponseLoggerClass: ((new () => LoggerInterface)) = extendLoggerClass(ResponseLoggerMixin)
+export const RequestLoggerClass: ((new () => StoreInterface)) = extendLoggerClass(RequestLoggerMixin)
+export const ResponseLoggerClass: ((new () => StoreInterface)) = extendLoggerClass(ResponseLoggerMixin)
 
-export const logger1: LoggerInterface = new RequestLoggerClass()
-export const logger2: LoggerInterface = new ResponseLoggerClass()
+export const logger1: StoreInterface = new RequestLoggerClass()
+export const logger2: StoreInterface = new ResponseLoggerClass()
 
 // interface Logger {
 //   log: (s: string) => void
