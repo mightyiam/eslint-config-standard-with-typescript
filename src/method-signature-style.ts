@@ -1,71 +1,50 @@
-interface StoreInterface { // Sealed
-  write: (s: string) => void
+interface StoreInterface {
+  write: (data: string) => void
 }
 
-class Store implements StoreInterface { // Sealed
-  write (s: string): void {
-    // write to store
+class DbStore implements StoreInterface {
+  write (_data: string): void {
+    // write to db
   }
 }
 
-export class StoreLoggerMixin extends Store implements StoreInterface {
-  write (s: string): void {
-    super.write('')
-    console.log('Storing: ', s)
+class FsStore implements StoreInterface {
+  write (_data: string): void {
+    // write to fs
   }
 }
 
-export function extendStoreClass (BaseStore: new () => StoreInterface): (new () => StoreInterface) {
-  return class extendedStore extends BaseStore {
-    // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
-    // but extended class 'extendedLogger' defines it as instance member function."
-    write (s: string): void {
-      console.log('LOG: ', s)
-
-      super.write(s)
+export function extendStoreClass (BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
+  if (debug) {
+    return class StoreLoggerMixin extends BaseStore {
+      write(data: string): void {
+        console.log('storing: ', data)
+        super.write('')
+      }
     }
   }
+
+  return BaseStore
 }
 
-export const StoreLoggerClass: ((new () => StoreInterface)) = extendedStoreClass(StoreLoggerMixin)
+let StoreClass: new () => DbStore
+let store: StoreInterface
 
-export const StoreLoggerClass: ((new () => StoreInterface)) = storeWithLoggerClass(Store)
+StoreClass = extendStoreClass(DbStore, false)
+store = new StoreClass()
+store.write('some data')
 
-export const logger1: StoreInterface = new RequestLoggerClass()
+StoreClass = extendStoreClass(DbStore, true)
+store = new StoreClass()
+store.write('some data')
 
-// interface Logger {
-//   log: (s: string) => void
-// }
+StoreClass = extendStoreClass(FsStore, false)
+store = new StoreClass()
+store.write('some data')
 
-// type LoggerConstructor = new () => Logger
-
-// interface RequestLoggerInstance extends Logger { // Sealed
-//   log: (s: string) => Promise<void>
-// }
-
-// export class RequestLoggerClass implements RequestLoggerInstance {
-//   async log (s: string): Promise<void> {
-//     console.log('REQUEST:', s)
-//   }
-// }
-
-// export class ResponseLogger implements RequestLoggerInstance {
-//   async log (s: string): Promise<void> {
-//     console.log('proto log', s)
-//   }
-// }
-
-// export function getConstructor (Base: ProtoConstructor): AConstructor {
-//   return class A extends Base {
-//     // will say "TS2425: Class 'ProtoInstance' defines instance member property 'log',
-//     // but extended class 'A' defines it as instance member function."
-//     async log (s: string): Promise<void> {
-//       console.log('a log', s)
-
-//       return await super.log(s)
-//     }
-//   }
-// }
+StoreClass = extendStoreClass(FsStore, true)
+store = new StoreClass()
+store.write('some data')
 
 // /// ---------------------------
 
