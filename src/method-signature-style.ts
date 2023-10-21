@@ -8,20 +8,15 @@ class Store implements StoreInterface { // Sealed
   }
 }
 
-export class RequestLoggerMixin extends Store implements StoreInterface {
+export class StoreLoggerMixin extends Store implements StoreInterface {
   write (s: string): void {
-    console.log('REQUEST: ', s)
+    super.write('')
+    console.log('Storing: ', s)
   }
 }
 
-export class ResponseLoggerMixin extends Store implements StoreInterface {
-  write (s: string): void {
-    console.error('RESPONSE: ', s)
-  }
-}
-
-export function extendLoggerClass (BaseLogger: new () => StoreInterface): (new () => StoreInterface) {
-  return class extendedLogger extends BaseLogger {
+export function extendStoreClass (BaseStore: new () => StoreInterface): (new () => StoreInterface) {
+  return class extendedStore extends BaseStore {
     // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
     // but extended class 'extendedLogger' defines it as instance member function."
     write (s: string): void {
@@ -32,11 +27,9 @@ export function extendLoggerClass (BaseLogger: new () => StoreInterface): (new (
   }
 }
 
-export const RequestLoggerClass: ((new () => StoreInterface)) = extendLoggerClass(RequestLoggerMixin)
-export const ResponseLoggerClass: ((new () => StoreInterface)) = extendLoggerClass(ResponseLoggerMixin)
+export const StoreLoggerClass: ((new () => StoreInterface)) = extendedStoreClass(StoreLoggerMixin)
 
 export const logger1: StoreInterface = new RequestLoggerClass()
-export const logger2: StoreInterface = new ResponseLoggerClass()
 
 // interface Logger {
 //   log: (s: string) => void
