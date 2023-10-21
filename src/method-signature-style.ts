@@ -1,22 +1,26 @@
-interface LoggerInterface {
+interface LoggerInterface { // Sealed
   print: (s: string) => void
 }
 
-type DefaultLogger = new () => RequestLogger
+class DefaultLogger implements LoggerInterface { // Sealed
+  print (s: string): void {
+    console.log('DEFAULT: ', s)
+  }
+}
 
-export class RequestLogger implements LoggerInterface {
+export class RequestLoggerMixin extends DefaultLogger implements LoggerInterface {
   print (s: string): void {
     console.log('REQUEST: ', s)
   }
 }
 
-export class ResponseLogger implements LoggerInterface {
+export class ResponseLoggerMixin extends DefaultLogger implements LoggerInterface {
   print (s: string): void {
     console.log('RESPONSE: ', s)
   }
 }
 
-export function getLogger (BaseLogger: new () => LoggerInterface): (new () => LoggerInterface) {
+export function extendLoggerClass (BaseLogger: new () => LoggerInterface): (new () => LoggerInterface) {
   return class extendedLogger extends BaseLogger {
     // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
     // but extended class 'extendedLogger' defines it as instance member function."
@@ -27,6 +31,12 @@ export function getLogger (BaseLogger: new () => LoggerInterface): (new () => Lo
     }
   }
 }
+
+export const RequestLoggerClass: ((new () => LoggerInterface)) = extendLoggerClass(RequestLoggerMixin)
+export const ResponseLoggerClass: ((new () => LoggerInterface)) = extendLoggerClass(ResponseLoggerMixin)
+
+export const logger1: LoggerInterface = new RequestLoggerClass()
+export const logger2: LoggerInterface = new ResponseLoggerClass()
 
 // interface Logger {
 //   log: (s: string) => void
