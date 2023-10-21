@@ -1,25 +1,29 @@
 interface LoggerInterface {
-  print: (s: string) => Promise<void>
+  print: (s: string) => void
 }
 
-// interface AnotherLoggerInterface extends LoggerInterface {
-//   print: (s: string) => Promise<void>
-// }
+type DefaultLogger = new () => RequestLogger
 
-export class Proto implements LoggerInterface {
-  async print (s: string): Promise<void> {
-    console.log('proto print', s)
+export class RequestLogger implements LoggerInterface {
+  print (s: string): void {
+    console.log('REQUEST: ', s)
   }
 }
 
-export function getConstructor (Base: new () => LoggerInterface): (new () => LoggerInterface) {
-  return class A extends Base {
-    // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
-    // but extended class 'A' defines it as instance member function."
-    async print (s: string): Promise<void> {
-      console.log('a print', s)
+export class ResponseLogger implements LoggerInterface {
+  print (s: string): void {
+    console.log('RESPONSE: ', s)
+  }
+}
 
-      await super.print(s)
+export function getLogger (BaseLogger: new () => LoggerInterface): (new () => LoggerInterface) {
+  return class extendedLogger extends BaseLogger {
+    // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
+    // but extended class 'extendedLogger' defines it as instance member function."
+    print (s: string): void {
+      console.log('LOG: ', s)
+
+      super.print(s)
     }
   }
 }
