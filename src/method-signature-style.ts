@@ -2,13 +2,9 @@ interface LoggerInterface {
   print: (s: string) => Promise<void>
 }
 
-type LoggerClass = new () => LoggerInterface
-
-interface AInstance extends LoggerInterface {
-  print: (s: string) => Promise<void>
-}
-
-type AConstructor = new () => AInstance
+// interface AnotherLoggerInterface extends LoggerInterface {
+//   print: (s: string) => Promise<void>
+// }
 
 export class Proto implements LoggerInterface {
   async print (s: string): Promise<void> {
@@ -16,7 +12,7 @@ export class Proto implements LoggerInterface {
   }
 }
 
-export function getConstructor (Base: LoggerClass): AConstructor {
+export function getConstructor (Base: new () => LoggerInterface): (new () => LoggerInterface) {
   return class A extends Base {
     // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
     // but extended class 'A' defines it as instance member function."
