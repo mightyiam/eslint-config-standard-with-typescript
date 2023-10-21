@@ -1,82 +1,104 @@
-interface Logger {
-  log: (s: string) => void
+interface LoggerInterface {
+  print: (s: string) => Promise<void>
 }
 
-type LoggerConstructor = new () => Logger
+type LoggerClass = new () => LoggerInterface
 
-interface RequestLoggerInstance extends Logger { // Sealed 
-  log: (s: string) => Promise<void>
+interface AInstance extends LoggerInterface {
+  print: (s: string) => Promise<void>
 }
 
-export class RequestLoggerClass implements RequestLoggerInstance {
-  async log(s: string): Promise<void> {
-    console.log('REQUEST:', s)
+type AConstructor = new () => AInstance
+
+export class Proto implements LoggerInterface {
+  async print (s: string): Promise<void> {
+    console.log('proto print', s)
   }
 }
 
-export class ResponseLogger implements RequestLoggerInstance {
-  async log(s: string): Promise<void> {
-    console.log('proto log', s)
-  }
-}
-
-
-export function getConstructor(Base: ProtoConstructor): AConstructor {
+export function getConstructor (Base: LoggerClass): AConstructor {
   return class A extends Base {
-    // will say "TS2425: Class 'ProtoInstance' defines instance member property 'log',
+    // will say "TS2425: Class 'LoggerInterface' defines instance member property 'print',
     // but extended class 'A' defines it as instance member function."
-    async log(s: string): Promise<void> {
-      console.log('a log', s)
+    async print (s: string): Promise<void> {
+      console.log('a print', s)
 
-      return await super.log(s)
+      await super.print(s)
     }
   }
 }
 
-/// ---------------------------
+// interface Logger {
+//   log: (s: string) => void
+// }
 
+// type LoggerConstructor = new () => Logger
 
-NodeStream = ProtoInstance
+// interface RequestLoggerInstance extends Logger { // Sealed
+//   log: (s: string) => Promise<void>
+// }
 
+// export class RequestLoggerClass implements RequestLoggerInstance {
+//   async log (s: string): Promise<void> {
+//     console.log('REQUEST:', s)
+//   }
+// }
 
+// export class ResponseLogger implements RequestLoggerInstance {
+//   async log (s: string): Promise<void> {
+//     console.log('proto log', s)
+//   }
+// }
 
+// export function getConstructor (Base: ProtoConstructor): AConstructor {
+//   return class A extends Base {
+//     // will say "TS2425: Class 'ProtoInstance' defines instance member property 'log',
+//     // but extended class 'A' defines it as instance member function."
+//     async log (s: string): Promise<void> {
+//       console.log('a log', s)
 
+//       return await super.log(s)
+//     }
+//   }
+// }
 
+// /// ---------------------------
 
-interface ProtoInstance {
-  log: (s: string) => Promise<void>
-}
+// NodeStream = ProtoInstance
 
-abstract class AClass implements ProtoInstance {
-  async log(s: string): Promise<void> {
-    throw new Error('should be implemented in inherided class')
-  }
-}
+// interface ProtoInstance {
+//   log: (s: string) => Promise<void>
+// }
 
-abstract class AbstractProto implements ProtoInstance {
-  async log(s: string): Promise<void> {
-    throw new Error('should be implemented in inherided class')
-  }
+// abstract class AClass implements ProtoInstance {
+//   async log (s: string): Promise<void> {
+//     throw new Error('should be implemented in inherided class')
+//   }
+// }
 
-  async otherPrivateMethod() { }
-}
+// abstract class AbstractProto implements ProtoInstance {
+//   async log (s: string): Promise<void> {
+//     throw new Error('should be implemented in inherided class')
+//   }
 
-export class Proto extends AbstractProto implements ProtoInstance {
-  async log(s: string): Promise<void> {
-    console.log('proto log', s)
-  }
-}
+//   async otherPrivateMethod () { }
+// }
 
-export function getConstructor(Base: typeof AbstractProto): typeof AClass {
-  return class A extends Base {
-    async log(s: string): Promise<void> {
-      console.log('a log', s)
-      this.otherPrivateMethod()
-      return await super.log(s)
-    }
-  }
-}
+// export class Proto extends AbstractProto implements ProtoInstance {
+//   async log (s: string): Promise<void> {
+//     console.log('proto log', s)
+//   }
+// }
 
-/**otherPrivateMethod is not callable here */
-getConstructor()
+// export function getConstructor (Base: typeof AbstractProto): typeof AClass {
+//   return class A extends Base {
+//     async log (s: string): Promise<void> {
+//       console.log('a log', s)
+//       this.otherPrivateMethod()
+//       await super.log(s)
+//     }
+//   }
+// }
 
+// /** otherPrivateMethod is not callable here */
+// getConstructor()
