@@ -14,7 +14,7 @@ class FsStore implements StoreInterface {
   }
 }
 
-export function extendStoreClass (BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
+function extendStoreClass (BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
   if (debug) {
     return class StoreLoggerMixin extends BaseStore {
       write (data: string): void {

@@ -3,30 +3,27 @@ interface StoreInterface {
 }
 
 abstract class AbstractStore implements StoreInterface {
-  write(data: string): void { }
+  write (_data: string): void {
+    throw new Error('not implemented')
+  }
 }
 
-export class Store extends AbstractStore implements StoreInterface {
-  write(data: string): void {
-
-  }
-
-class DbStore implements Store {
-  write(_data: string): void {
+class DbStore extends AbstractStore {
+  write (_data: string): void {
     // write to db
   }
 }
 
-class FsStore implements StoreInterface {
-  write(_data: string): void {
+class FsStore implements AbstractStore {
+  write (_data: string): void {
     // write to fs
   }
 }
 
-export function extendStoreClass(BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
+function extendStoreClass (BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
   if (debug) {
     return class StoreLoggerMixin extends BaseStore {
-      write(data: string): void {
+      write (data: string): void {
         console.log('storing: ', data)
         super.write(data)
       }
@@ -54,31 +51,3 @@ store.write('some data')
 StoreClass = extendStoreClass(FsStore, true)
 store = new StoreClass()
 store.write('some data')
-// NodeStream = ProtoInstance
-
-// abstract class AbstractProto implements ProtoInstance {
-//   async log (s: string): Promise<void> {
-//     throw new Error('should be implemented in inherided class')
-//   }
-
-//   async otherPrivateMethod () { }
-// }
-
-// export class Proto extends AbstractProto implements ProtoInstance {
-//   async log (s: string): Promise<void> {
-//     console.log('proto log', s)
-//   }
-// }
-
-// export function getConstructor (Base: typeof AbstractProto): typeof AClass {
-//   return class A extends Base {
-//     async log (s: string): Promise<void> {
-//       console.log('a log', s)
-//       this.otherPrivateMethod()
-//       await super.log(s)
-//     }
-//   }
-// }
-
-// /** otherPrivateMethod is not callable here */
-// getConstructor()
