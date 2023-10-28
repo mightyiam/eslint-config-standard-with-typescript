@@ -2,6 +2,10 @@ interface StoreInterface {
   write: (data: string) => void
 }
 
+abstract class Store implements StoreInterface {
+  write (data: string): void
+}
+
 class DbStore implements StoreInterface {
   write (_data: string): void {
     // write to db
@@ -45,3 +49,32 @@ store.write('some data')
 StoreClass = extendStoreClass(FsStore, true)
 store = new StoreClass()
 store.write('some data')
+// NodeStream = ProtoInstance
+
+// abstract class AbstractProto implements ProtoInstance {
+//   async log (s: string): Promise<void> {
+//     throw new Error('should be implemented in inherided class')
+//   }
+
+//   async otherPrivateMethod () { }
+// }
+
+// export class Proto extends AbstractProto implements ProtoInstance {
+//   async log (s: string): Promise<void> {
+//     console.log('proto log', s)
+//   }
+// }
+
+// export function getConstructor (Base: typeof AbstractProto): typeof AClass {
+//   return class A extends Base {
+//     async log (s: string): Promise<void> {
+//       console.log('a log', s)
+//       this.otherPrivateMethod()
+//       await super.log(s)
+//     }
+//   }
+// }
+
+// /** otherPrivateMethod is not callable here */
+// getConstructor()
+
