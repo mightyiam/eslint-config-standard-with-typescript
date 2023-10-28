@@ -2,26 +2,31 @@ interface StoreInterface {
   write: (data: string) => void
 }
 
-abstract class Store implements StoreInterface {
-  write (data: string): void
+abstract class AbstractStore implements StoreInterface {
+  write(data: string): void { }
 }
 
-class DbStore implements StoreInterface {
-  write (_data: string): void {
+export class Store extends AbstractStore implements StoreInterface {
+  write(data: string): void {
+
+  }
+
+class DbStore implements Store {
+  write(_data: string): void {
     // write to db
   }
 }
 
 class FsStore implements StoreInterface {
-  write (_data: string): void {
+  write(_data: string): void {
     // write to fs
   }
 }
 
-export function extendStoreClass (BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
+export function extendStoreClass(BaseStore: new () => StoreInterface, debug: boolean): (new () => StoreInterface) {
   if (debug) {
     return class StoreLoggerMixin extends BaseStore {
-      write (data: string): void {
+      write(data: string): void {
         console.log('storing: ', data)
         super.write(data)
       }
@@ -77,4 +82,3 @@ store.write('some data')
 
 // /** otherPrivateMethod is not callable here */
 // getConstructor()
-
