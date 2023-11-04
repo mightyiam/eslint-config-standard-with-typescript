@@ -1,17 +1,22 @@
 interface MethodStyleIface {
   // Shorthand method signature is forbidden.
-  method (): void
+  method: () => void
 }
 
 interface PropertyStyleIface {
   method: () => void
 }
 
-class MethodStyle implements MethodStyleIface {
+class MethodStyleMethodClass implements MethodStyleIface {
   method (): void {
     console.log(this.method)
   }
+}
 
+class MethodStylePropertyClass implements MethodStyleIface {
+  method = (): void => {
+    console.log(this.method)
+  }
 }
 
 const methodStyle = new MethodStyle()
