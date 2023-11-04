@@ -3,10 +3,6 @@ interface MethodStyleIface {
   method(): void
 }
 
-interface PropertyStyleIface {
-  method: () => void
-}
-
 class MethodStyleMethodClass implements MethodStyleIface {
   method (): void {
     console.log(this.method)
@@ -15,12 +11,11 @@ class MethodStyleMethodClass implements MethodStyleIface {
 
 const methodStyleMethodInstance: MethodStyleIface = new MethodStyleMethodClass()
 const methodStyleMethod = methodStyleMethodInstance.method
+// Unchecked 'this'--runtime error.
 methodStyleMethod()
 
-class MethodStylePropertyClass implements MethodStyleIface {
-  method = (): void => {
-    console.log(this.method)
-  }
+interface PropertyStyleIface {
+  method: () => void
 }
 
 class PropertyStyleMethodClass implements PropertyStyleIface {
@@ -29,8 +24,7 @@ class PropertyStyleMethodClass implements PropertyStyleIface {
   }
 }
 
-class PropertyStylePropertyClass implements PropertyStyleIface {
-  method = (): void => {
-    console.log(this.method)
-  }
-}
+const propertyStyleMethodInstance: PropertyStyleIface = new PropertyStyleMethodClass()
+const propertyStyleMethod = propertyStyleMethodInstance.method
+// Unchecked 'this' --runtime error.
+propertyStyleMethod()
