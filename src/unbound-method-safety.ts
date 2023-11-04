@@ -1,0 +1,3 @@
+interface MethodStyle {
+  method(): null
+}
