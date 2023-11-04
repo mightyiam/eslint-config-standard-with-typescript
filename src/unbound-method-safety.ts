@@ -13,6 +13,10 @@ class MethodStyleMethodClass implements MethodStyleIface {
   }
 }
 
+const methodStyleMethodInstance: MethodStyleIface = new MethodStyleMethodClass()
+const methodStyleMethod = methodStyleMethodInstance.method
+methodStyleMethod()
+
 class MethodStylePropertyClass implements MethodStyleIface {
   method = (): void => {
     console.log(this.method)
@@ -30,10 +34,3 @@ class PropertyStylePropertyClass implements PropertyStyleIface {
     console.log(this.method)
   }
 }
-
-const methodStyleMethodInstance: MethodStyleIface = new MethodStyleMethodClass()
-methodStyleMethodInstanceMethod 
-
-const methodStyle = new MethodStyle()
-const methodStyleMethod = methodStyle.method
-methodStyleMethod()
