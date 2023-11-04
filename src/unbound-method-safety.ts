@@ -1,3 +1,8 @@
 interface MethodStyle {
-  method(): null
+  // Shorthand method signature is forbidden.
+  method: () => void
+}
+
+interface PropertyStyle {
+  method: () => void
 }
