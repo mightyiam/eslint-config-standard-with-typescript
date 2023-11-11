@@ -1,24 +1,26 @@
 class Animal {
-  size: number
-  sound (): void {
-    throw new Error()
-  }
+  // sound (): void {
+  //   throw new Error()
+  // }
 
-  some (): void {
-
-  }
-}
-
-export class Dog extends Animal {
-  sound (): void {
-    console.log('bark' + (this.size < 2 ? ' loud' : ''))
+  static population (n: number): Animal[] {
+    return Array(n).fill(null).map(() => new Animal())
   }
 }
 
-export const registerListerner = (callback: () => void): void => {
+let { population } = Animal
 
-}
 
-const a: Animal = new Dog()
+// export class Dog extends Animal {
+//   sound (): void {
+//     console.log('bark' + (this.size < 2 ? ' loud' : ''))
+//   }
+// }
+//
+// export const registerListerner = (callback: () => void): void => {
+//
+// }
 
-registerListerner(a.sound) // Error: this is undefined
+// const a: Animal = new Dog()
+
+// registerListerner(a.sound) // Error: this is undefined
