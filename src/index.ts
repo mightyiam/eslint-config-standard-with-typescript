@@ -44,6 +44,15 @@ function fromEntries<T> (iterable: Array<[string, T]>): Record<string, T> {
   }, {})
 }
 
+const disabledRules = fromEntries(equivalents.map((name) => [name, 'off']))
+const enabledRules = fromEntries(equivalents.map((name) => [`@typescript-eslint/${name}`, ruleFromStandard(name)]));
+// Ignore parameter decorators indent. See: https://github.com/typescript-eslint/typescript-eslint/issues/1824#issuecomment-957559729
+(enabledRules['@typescript-eslint/indent'] as Linter.RuleLevelAndOptions)[2].ignoredNodes.push(
+  'FunctionExpression > .params[decorators.length > 0]',
+  'FunctionExpression > .params > :matches(Decorator, :not(:first-child))',
+  'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key'
+)
+
 const config: Linter.Config = {
   extends: 'eslint-config-standard',
   plugins: ['@typescript-eslint'],
@@ -58,12 +67,12 @@ const config: Linter.Config = {
     'no-undef': 'off',
 
     // Rules replaced by @typescript-eslint versions:
-    ...fromEntries(equivalents.map((name) => [name, 'off'])),
+    ...disabledRules,
     camelcase: 'off',
     'no-use-before-define': 'off',
 
     // @typescript-eslint versions of Standard.js rules:
-    ...fromEntries(equivalents.map((name) => [`@typescript-eslint/${name}`, ruleFromStandard(name)])),
+    ...enabledRules,
     '@typescript-eslint/no-use-before-define': ['error', {
       functions: false,
       classes: false,

@@ -198,7 +198,7 @@ test('export', (t): void => {
         ImportDeclaration: 1,
         flatTernaryExpressions: false,
         ignoreComments: false,
-        ignoredNodes: ['TemplateLiteral *', 'JSXElement', 'JSXElement > *', 'JSXAttribute', 'JSXIdentifier', 'JSXNamespacedName', 'JSXMemberExpression', 'JSXSpreadAttribute', 'JSXExpressionContainer', 'JSXOpeningElement', 'JSXClosingElement', 'JSXFragment', 'JSXOpeningFragment', 'JSXClosingFragment', 'JSXText', 'JSXEmptyExpression', 'JSXSpreadChild'],
+        ignoredNodes: ['TemplateLiteral *', 'JSXElement', 'JSXElement > *', 'JSXAttribute', 'JSXIdentifier', 'JSXNamespacedName', 'JSXMemberExpression', 'JSXSpreadAttribute', 'JSXExpressionContainer', 'JSXOpeningElement', 'JSXClosingElement', 'JSXFragment', 'JSXOpeningFragment', 'JSXClosingFragment', 'JSXText', 'JSXEmptyExpression', 'JSXSpreadChild', 'FunctionExpression > .params[decorators.length > 0]', 'FunctionExpression > .params > :matches(Decorator, :not(:first-child))', 'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key'],
         offsetTernaryExpressions: true
       }],
       '@typescript-eslint/key-spacing': ['error', { beforeColon: false, afterColon: true }],
