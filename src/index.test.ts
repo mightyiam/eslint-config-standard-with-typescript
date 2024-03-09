@@ -2,7 +2,7 @@ import test from 'ava'
 import { type PackageJson } from 'type-fest'
 import exported from '.'
 import configStandard from './eslint-config-standard'
-import plugin, { rules as typescriptEslintRules } from '@typescript-eslint/eslint-plugin'
+import { rules as typescriptEslintRules } from '@typescript-eslint/eslint-plugin'
 import standardPkg from 'eslint-config-standard/package.json'
 import { Linter, ESLint } from 'eslint'
 import { readFile } from 'fs/promises'
@@ -42,7 +42,7 @@ const extractVersionSpec = (range: string): string => range.split('@').slice(-1)
 const equivalents = [...(new Linter()).getRules().keys()]
   .filter(name => Object.prototype.hasOwnProperty.call(typescriptEslintRules, name))
 
-const [upstream, ours] = exported
+const [_upstream, ours] = exported
 const ourRules = ours.rules
 if (ourRules === undefined) throw new Error('we seem to be exporting no rules')
 
@@ -552,7 +552,7 @@ test('our configuration is compatible with the plugin and parser at bottom of pe
     overrideConfig: config
   })
 
-  const results = await eslint.lintFiles('src/**/*')
+  const results = await (eslint.lintFiles('src/**/*') as ReturnType<ESLint['lintFiles']>)
   t.true(results.length > 0)
   results.forEach(result => t.deepEqual(result.messages, [], result.filePath))
 })
