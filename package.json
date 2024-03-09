@@ -53,15 +53,12 @@
     "TypeScript"
   ],
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
-    "eslint-config-standard": "17.1.0"
+    "eslint-config-standard": "github:standard/eslint-config-standard#6528dae93671ac5b2440007277e1b15e729b6356"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
     "eslint": "^8.0.1",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
-    "eslint-plugin-promise": "^6.0.0",
     "typescript": "*"
   },
   "devDependencies": {
@@ -78,14 +75,10 @@
     "@types/ungap__structured-clone": "1.2.0",
     "@typescript-eslint_bottom/eslint-plugin": "npm:@typescript-eslint/eslint-plugin@6.4.0",
     "@typescript-eslint_bottom/parser": "npm:@typescript-eslint/parser@6.4.0",
-    "@typescript-eslint/eslint-plugin": "6.10.0",
     "@ungap/structured-clone": "1.2.0",
     "ava": "6.1.2",
     "editorconfig-checker": "5.1.4",
     "eslint": "8.57.0",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-n": "16.6.2",
-    "eslint-plugin-promise": "6.1.1",
     "js-yaml": "4.1.0",
     "just-diff": "6.0.2",
     "npm-package-arg": "11.0.1",

@@ -2,7 +2,7 @@ import test from 'ava'
 import { type PackageJson } from 'type-fest'
 import exported from '.'
 import configStandard from './eslint-config-standard'
-import { rules as typescriptEslintRules } from '@typescript-eslint/eslint-plugin'
+import plugin, { rules as typescriptEslintRules } from '@typescript-eslint/eslint-plugin'
 import standardPkg from 'eslint-config-standard/package.json'
 import { Linter, ESLint } from 'eslint'
 import { readFile } from 'fs/promises'
@@ -10,6 +10,7 @@ import { resolve } from 'path'
 import npmPkgArg from 'npm-package-arg'
 import semver from 'semver'
 import structuredClone from '@ungap/structured-clone'
+import typescriptEslintBottomPlugin from '@typescript-eslint/eslint-plugin'
 
 interface PkgDetails {
   pkgPath: string
@@ -38,7 +39,8 @@ const extractVersionSpec = (range: string): string => range.split('@').slice(-1)
 const equivalents = [...(new Linter()).getRules().keys()]
   .filter(name => Object.prototype.hasOwnProperty.call(typescriptEslintRules, name))
 
-const ourRules: Linter.Config['rules'] = exported.rules
+const [upstream, ours] = exported
+const ourRules = ours.rules
 if (ourRules === undefined) throw new Error('we seem to be exporting no rules')
 
 const standardRules = configStandard.rules
@@ -302,8 +304,8 @@ const isPinnedRange = (rangeStr: string): boolean => {
 }
 
 const typescriptEslintBottom = '@typescript-eslint_bottom'
-const typescriptEslintBottomPlugin = `${typescriptEslintBottom}/eslint-plugin`
-const typescriptEslintBottomParser = `${typescriptEslintBottom}/parser`
+const typescriptEslintBottomPluginName = `${typescriptEslintBottom}/eslint-plugin`
+const typescriptEslintBottomParserName = `${typescriptEslintBottom}/parser`
 
 test('Dependencies range types', async (t) => {
   const { ourDeps, ourPeerDeps, ourDevDeps } = await getPkgDetails()
@@ -515,10 +517,10 @@ test('our configuration is compatible with the plugin and parser at bottom of pe
   const peerDepRange = ourPeerDeps['@typescript-eslint/eslint-plugin']
   if (peerDepRange === undefined) throw new Error()
 
-  const bottomPluginRange = ourDevDeps[typescriptEslintBottomPlugin]
+  const bottomPluginRange = ourDevDeps[typescriptEslintBottomPluginName]
   if (bottomPluginRange === undefined) throw new Error()
   const bottomPluginVersion = extractVersionSpec(bottomPluginRange)
-  const bottomParserRange = ourDevDeps[typescriptEslintBottomParser]
+  const bottomParserRange = ourDevDeps[typescriptEslintBottomParserName]
   if (bottomParserRange === undefined) throw new Error()
   const bottomParserVersion = extractVersionSpec(bottomParserRange)
 
