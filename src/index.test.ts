@@ -11,6 +11,9 @@ import npmPkgArg from 'npm-package-arg'
 import semver from 'semver'
 import structuredClone from '@ungap/structured-clone'
 import typescriptEslintBottomPlugin from '@typescript-eslint/eslint-plugin'
+import pkg from "eslint/use-at-your-own-risk";
+// @ts-expect-error
+const { FlatESLint } = pkg;
 
 interface PkgDetails {
   pkgPath: string
