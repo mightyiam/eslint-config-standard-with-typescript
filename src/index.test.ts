@@ -548,8 +548,7 @@ test('our configuration is compatible with the plugin and parser at bottom of pe
     }
   }
 
-  const eslint = new ESLint({
-    useEslintrc: false,
+  const eslint = new FlatESLint({
     overrideConfig: config
   })
 
