@@ -42,7 +42,7 @@ yarn add --dev \
   eslint-plugin-promise@^6.0.0 \
   eslint-plugin-import@^2.25.2 \
   eslint-plugin-n@^15.0.0 \
-  @typescript-eslint/eslint-plugin@^6.4.0 \
+  @typescript-eslint/eslint-plugin@^7.3.1 \
   eslint-config-love@latest
 ```
 

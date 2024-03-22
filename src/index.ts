@@ -22,6 +22,7 @@ const equivalents = [
   'no-unused-expressions',
   'no-useless-constructor',
   'object-curly-spacing',
+  'prefer-promise-reject-errors',
   'quotes',
   'semi',
   'space-before-blocks',

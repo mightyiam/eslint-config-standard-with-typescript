@@ -50,11 +50,11 @@
     "TypeScript"
   ],
   "dependencies": {
-    "@typescript-eslint/parser": "^6.4.0",
+    "@typescript-eslint/parser": "^7.3.1",
     "eslint-config-standard": "17.1.0"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
@@ -73,9 +73,9 @@
     "@types/npm-package-arg": "6.1.4",
     "@types/semver": "7.5.8",
     "@types/ungap__structured-clone": "1.2.0",
-    "@typescript-eslint_bottom/eslint-plugin": "npm:@typescript-eslint/eslint-plugin@6.4.0",
-    "@typescript-eslint_bottom/parser": "npm:@typescript-eslint/parser@6.4.0",
-    "@typescript-eslint/eslint-plugin": "6.10.0",
+    "@typescript-eslint_bottom/eslint-plugin": "npm:@typescript-eslint/eslint-plugin@7.3.1",
+    "@typescript-eslint_bottom/parser": "npm:@typescript-eslint/parser@7.3.1",
+    "@typescript-eslint/eslint-plugin": "7.3.1",
     "@ungap/structured-clone": "1.2.0",
     "ava": "6.1.2",
     "editorconfig-checker": "5.1.5",
