@@ -5,27 +5,6 @@ on:
       - master
 
 jobs:
-  commitlint:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: latest
-      - run: npm ci
-      # Hiding tsconfig.json to workaround
-      # https://github.com/conventional-changelog/commitlint/issues/3256
-      - run: mv tsconfig.json tsconfig.json.nope
-      - name: commitlint
-        run: |
-          npx commitlint \
-            --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
-            --to ${{ github.event.pull_request.head.sha }} \
-            --verbose
-      - run: mv tsconfig.json.nope tsconfig.json
   publish:
     needs: ci
     if: github.ref == 'refs/heads/master'
@@ -39,45 +18,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false # for later steps to use a different authentication
-      - uses: actions/setup-node@v4
-        with:
-          node-version: latest
-      - run: npm ci
-      - run: npx semantic-release
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix run .#release
         env:
           GITHUB_TOKEN: ${{ steps.get-token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  # The ci-matrix job ends up as multiple jobs and therefore as multiple checks.
-  # Each check's name ends up with the node version appended.
-  # If we were to use those checks as required checks, we would have to occasionally bump them.
-  # This job allows us to have a single check that we don't have to bump.
-  ci:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - run: exit 0
   test:
-    needs: get-supported-node-versions
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ${{ fromJson(needs.get-supported-node-versions.outputs.versions) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm --global install npm@latest
-      - run: npm ci
-      - run: npm test
-  get-supported-node-versions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - id: get
-        run: |
-          set -euxo pipefail
-          active_versions=$(bash get-node-supported-versions.sh)
-          echo "active=$active_versions" >> "$GITHUB_OUTPUT"
-    outputs:
-      versions: ${{ steps.get.outputs.active }}
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix run .#test

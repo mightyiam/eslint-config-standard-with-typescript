@@ -6,12 +6,55 @@
     nixpkgs,
     flake-utils,
     self,
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
+  }: let
+    inherit
+      (builtins)
+      tryEval
+      ;
+
+    inherit
+      (nixpkgs.lib)
+      attrValues
+      concatStringsSep
+      filterAttrs
+      hasPrefix
+      isDerivation
+      ;
+
+    inherit
+      (flake-utils.lib)
+      eachDefaultSystem
+      mkApp
+      ;
+
+    systemAgnosticOutputs = eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
+
+      inherit
+        (pkgs)
+        writeShellScript
+        ;
+
+      allRuntimes = attrValues (filterAttrs (name: pkg: hasPrefix "nodejs_" name && isDerivation (tryEval pkg).value) pkgs);
+
+      testWithRuntime = runtime:
+        writeShellScript "test-with-${runtime.version}" (
+          let
+            npm = "${runtime}/bin/npm";
+          in ''
+            ${npm} install
+            ${npm} test
+          ''
+        );
+
+      allTests = map testWithRuntime allRuntimes;
+
+      test = writeShellScript "test" (pkgs.lib.traceVal (concatStringsSep "\n" allTests));
     in {
-      devShells.default = pkgs.mkShell {
-        packages = [pkgs.nodejs];
-      };
+      devShells.default = pkgs.mkShell {packages = [pkgs.nodejs];};
+
+      apps.test = mkApp {drv = test;};
     });
+  in
+    systemAgnosticOutputs;
 }
