@@ -17,6 +17,7 @@
       attrValues
       concatStringsSep
       filterAttrs
+      getExe
       hasPrefix
       isDerivation
       ;
@@ -33,12 +34,13 @@
       inherit
         (pkgs)
         writeShellScript
+        parallel
         ;
 
       allRuntimes = attrValues (filterAttrs (name: pkg: hasPrefix "nodejs_" name && isDerivation (tryEval pkg).value) pkgs);
 
       testWithRuntime = runtime:
-        writeShellScript "test-with-${runtime.version}" (
+        writeShellScript "test-with-nodejs_${runtime.version}" (
           let
             npm = "${runtime}/bin/npm";
           in ''
@@ -49,11 +51,23 @@
 
       allTests = map testWithRuntime allRuntimes;
 
-      test = writeShellScript "test" (pkgs.lib.traceVal (concatStringsSep "\n" allTests));
+      test = writeShellScript "test" ''
+        log=log
+
+        ${getExe parallel} --keep-order --will-cite --joblog $log ::: ${concatStringsSep " " allTests}
+        cat $log
+        if grep -q 'Exitval [^0]' $log; then
+            echo "Some scripts failed."
+            exit 1
+        fi
+      '';
     in {
       devShells.default = pkgs.mkShell {packages = [pkgs.nodejs];};
 
-      apps.test = mkApp {drv = test;};
+      apps.test = mkApp {
+        drv = test;
+        exePath = "";
+      };
     });
   in
     systemAgnosticOutputs;
