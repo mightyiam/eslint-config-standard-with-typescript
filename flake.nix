@@ -44,7 +44,7 @@
           let
             npm = "${runtime}/bin/npm";
           in ''
-            ${npm} install
+            ${npm} ci
             ${npm} test
           ''
         );
